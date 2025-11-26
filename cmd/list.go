@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"project-app-todo-list-cli/service"
+	"project-app-todo-list-cli/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -13,10 +14,19 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		tasks := service.DisplayTodoList()
 
-		fmt.Println("No | Task | Status | Priority")
+		headers := []string{"No", "Task", "Status", "Priority"}
+		rows := [][]string{}
+
 		for i, t := range tasks {
-			fmt.Printf("%d | %s | %s | %s\n", i+1, t.Title, t.Status, t.Priority)
+			rows = append(rows, []string{
+				fmt.Sprintf("%d", i+1),
+				t.Title,
+				t.Status,
+				t.Priority,
+			})
 		}
+
+		utils.PrintTable(headers, rows)
 	},
 }
 
